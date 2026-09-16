@@ -30,4 +30,16 @@ app.post("/users", async (req, res) => {
     }
 })
 
+app.get("/users/:userId", async (req, res) => {
+    const result = await pool.query(`SELECT username, email
+                                     FROM users
+                                     WHERE id = $1`, 
+                                     [req.params.userId]);
+    if(result.rows.length === 1){
+        res.status(200).send(result.rows[0]);
+    } else {
+        res.status(404).send("Not Found");
+    }
+})
+
 module.exports = app;
