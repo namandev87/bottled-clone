@@ -46,4 +46,25 @@ app.get("/users/:userId", async (req, res) => {
     }
 })
 
+app.post("/users/:userId/bottles", async (req, res) => {
+    const userid = req.params.userId;
+    const message = req.body.message;
+    if(!message){
+        return res.status(400).send("Invalid body");
+    }
+    try {
+        const result = await pool.query(`INSERT INTO bottles (sender_id, message)
+                                         VALUES($1, $2)
+                                         RETURNING id, sender_id, message, status, created_at`
+                                         , [userid, message]);
+        res.status(201).send(result.rows[0]);
+    } catch (err){
+        if(err.code === "23503"){
+            return res.status(404).send("Not found");
+        } else {
+            return res.status(500).send("Error occured");
+        }
+    }
+})
+
 module.exports = app;
