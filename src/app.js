@@ -67,4 +67,16 @@ app.post("/users/:userId/bottles", async (req, res) => {
     }
 })
 
+app.get("/users/:userId/bottles", async (req, res) => {
+    try {
+        const result = await pool.query(`SELECT id, sender_id, message, status, created_at
+                                         FROM bottles
+                                         WHERE sender_id = $1`
+                                         , [req.params.userId]);
+        res.status(200).send(result.rows);
+    } catch (err) {
+        res.status(500).send("Error occured");
+    }
+})
+
 module.exports = app;
