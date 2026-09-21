@@ -26,7 +26,7 @@ app.post("/users", async (req, res) => {
         if(err.code === '23505'){
             return res.status(409).send("Username or email already exists");
         }
-        res.status(500).send("Error occured");
+        res.status(500).send("Error occurred");
     }
 })
 
@@ -42,7 +42,7 @@ app.get("/users/:userId", async (req, res) => {
             res.status(404).send("Not Found");
         }
     } catch(err){
-        return res.status(500).send("Error occured");
+        return res.status(500).send("Error occurred");
     }
 })
 
@@ -62,7 +62,7 @@ app.post("/users/:userId/bottles", async (req, res) => {
         if(err.code === "23503"){
             return res.status(404).send("Not found");
         } else {
-            return res.status(500).send("Error occured");
+            return res.status(500).send("Error occurred");
         }
     }
 })
@@ -75,7 +75,7 @@ app.get("/users/:userId/bottles", async (req, res) => {
                                          , [req.params.userId]);
         res.status(200).send(result.rows);
     } catch (err) {
-        res.status(500).send("Error occured");
+        res.status(500).send("Error occurred");
     }
 })
 
